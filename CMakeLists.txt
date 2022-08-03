@@ -67,6 +67,7 @@ add_library(liblccv ${SOURCES} ${HEADERS})
 set_target_properties(liblccv PROPERTIES PREFIX "" IMPORT_PREFIX "")
 target_link_libraries(liblccv pthread ${LIBCAMERA_LINK_LIBRARIES}
                       ${OpenCV_LIBS})
+target_compile_options(liblccv PRIVATE -fPIC)
 
 install(TARGETS liblccv LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
