@@ -189,13 +189,6 @@ struct FrameInfo
 	FrameInfo(libcamera::ControlList &ctrls)
 		: exposure_time(0.0), digital_gain(0.0), colour_gains({ { 0.0f, 0.0f } }), focus(0.0), aelock(false)
 	{
-<<<<<<< HEAD
-		if (ctrls.contains(libcamera::controls::ExposureTime.id()))
-			exposure_time = ctrls.get<int32_t>(libcamera::controls::ExposureTime);
-
-		if (ctrls.contains(libcamera::controls::AnalogueGain.id()))
-			analogue_gain = ctrls.get(libcamera::controls::AnalogueGain);
-=======
         auto exp = ctrls.get(libcamera::controls::ExposureTime);
 		if (exp)
 			exposure_time = *exp;
@@ -203,7 +196,6 @@ struct FrameInfo
 		auto ag = ctrls.get(libcamera::controls::AnalogueGain);
 		if (ag)
 			analogue_gain = *ag;
->>>>>>> b5dadc35c789ad381b612b4cd10637b2c1799e25
 
 		auto dg = ctrls.get(libcamera::controls::DigitalGain);
 		if (dg)
