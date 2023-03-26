@@ -21,6 +21,7 @@
 #include <any>
 #include <map>
 #include <iomanip>
+#include <optional>
 
 #include <libcamera/base/span.h>
 #include <libcamera/camera.h>
@@ -189,29 +190,29 @@ struct FrameInfo
 	FrameInfo(libcamera::ControlList &ctrls)
 		: exposure_time(0.0), digital_gain(0.0), colour_gains({ { 0.0f, 0.0f } }), focus(0.0), aelock(false)
 	{
-        auto exp = ctrls.get(libcamera::controls::ExposureTime);
+		std::optional<int> exp = ctrls.get(libcamera::controls::ExposureTime);
 		if (exp)
 			exposure_time = *exp;
 
-		auto ag = ctrls.get(libcamera::controls::AnalogueGain);
+		std::optional<float> ag = ctrls.get(libcamera::controls::AnalogueGain);
 		if (ag)
 			analogue_gain = *ag;
 
-		auto dg = ctrls.get(libcamera::controls::DigitalGain);
+		std::optional<float> dg = ctrls.get(libcamera::controls::DigitalGain);
 		if (dg)
 			digital_gain = *dg;
 
-		auto cg = ctrls.get(libcamera::controls::ColourGains);
+		std::optional<libcamera::Span<const float> > cg = ctrls.get(libcamera::controls::ColourGains);
 		if (cg)
 		{
 			colour_gains[0] = (*cg)[0], colour_gains[1] = (*cg)[1];
 		}
 
-		auto fom = ctrls.get(libcamera::controls::FocusFoM);
+		std::optional<int> fom = ctrls.get(libcamera::controls::FocusFoM);
 		if (fom)
 			focus = *fom;
 
-		auto ae = ctrls.get(libcamera::controls::AeLocked);
+		std::optional<int> ae = ctrls.get(libcamera::controls::AeLocked);
 		if (ae)
 			aelock = *ae;
 	}

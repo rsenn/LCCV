@@ -178,9 +178,9 @@ void LibcameraApp::StartCamera()
 
 	// Build a list of initial controls that we must set in the camera before starting it.
 	// We don't overwrite anything the application may have set before calling us.
-	if (!controls_.get(controls::ScalerCrop) && options_->roi_width != 0 && options_->roi_height != 0)
+	if (!std::optional<Rectangle>(controls_.get(controls::ScalerCrop)) && options_->roi_width != 0 && options_->roi_height != 0)
 	{
-		Rectangle sensor_area = *camera_->properties().get(properties::ScalerCropMaximum);
+		Rectangle sensor_area = *std::optional<Rectangle>(camera_->properties().get(properties::ScalerCropMaximum));
 		int x = options_->roi_x * sensor_area.width;
 		int y = options_->roi_y * sensor_area.height;
 		int w = options_->roi_width * sensor_area.width;
@@ -195,7 +195,7 @@ void LibcameraApp::StartCamera()
 	// Framerate is a bit weird. If it was set programmatically, we go with that, but
 	// otherwise it applies only to preview/video modes. For stills capture we set it
 	// as long as possible so that we get whatever the exposure profile wants.
-	if (!controls_.get(controls::FrameDurationLimits))
+	if (!std::optional<libcamera::Span<const long> >(controls_.get(controls::FrameDurationLimits)))
 	{
 		if (StillStream())
 			controls_.set(controls::FrameDurationLimits, libcamera::Span<const int64_t, 2>({ INT64_C(100), INT64_C(1000000000) }));
@@ -218,7 +218,7 @@ void LibcameraApp::StartCamera()
 		controls_.set(controls::ExposureValue, options_->ev);
 	if (!controls_.get(controls::AwbMode))
 		controls_.set(controls::AwbMode, options_->getWhiteBalance());
-	if (!controls_.get(controls::ColourGains) && options_->awb_gain_r && options_->awb_gain_b)
+	if (!std::optional<libcamera::Span<const float> >(controls_.get(controls::ColourGains)) && options_->awb_gain_r && options_->awb_gain_b)
 		controls_.set(controls::ColourGains, libcamera::Span<const float, 2>({ options_->awb_gain_r, options_->awb_gain_b }));
 	if (!controls_.get(controls::Brightness))
 		controls_.set(controls::Brightness, options_->brightness);
