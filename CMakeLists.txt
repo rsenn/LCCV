@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_compile_options(-Wall #-Wextra 
   #-pedantic 
   -Wno-unused-parameter -faligned-new
+  -fvisibility=hidden
   #-Werror -Wfatal-errors
   )
 add_definitions(-D_FILE_OFFSET_BITS=64)
