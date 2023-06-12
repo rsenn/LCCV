@@ -79,4 +79,4 @@ if(NOT LCCV_NO_INSTALL)
   install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endif(NOT LCCV_NO_INSTALL)
 
-add_subdirectory(example)
+#add_subdirectory(example)
